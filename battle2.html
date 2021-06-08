@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+
+<html onclick="playSong()">
+
+	
+		<head>
+<title>Battle</title>
+	<style>
+
+			body{
+
+				background-color: black;
+
+
+
+
+			}
+
+
+
+		
+			#scene{
+
+
+				position: relative;
+				background-image: url(R05c44c38a67737a04c2bd00acbea03692.jpg) no-repeat; 
+				width: 1000px;
+				height: 563px;
+				display: table;
+				margin: 0 auto;
+				overflow: hidden;
+
+			}
+
+			#angel{
+
+				position: absolute;
+				left: 20px;
+				top: 120px;
+			}
+
+			#angel2, #angel3 {
+
+				position: absolute;
+				left: 600px;
+				top: 120px;
+				z-index: 1;
+			}
+			#angelDead {
+				position: absolute;
+				left: -50px;
+				top: 220px;
+			}
+            #angelWins{
+
+            	position: absolute;
+            	left: 20px;
+            	top: 20px;
+            }
+			#angelHP {
+				position: absolute;
+				left: 115px;
+				top: 100px;
+				color: white;
+				font-size: 30px;
+				font-family: sans-serif;
+
+
+			}
+
+			#demon{
+				position: absolute;
+				left: 600px;
+				top: -40px;
+
+
+
+
+
+			}
+
+			#demon2, #demon3 {
+				position: absolute;
+				left: 100px;
+				top: -40px;
+			}
+			#demonDead{
+
+				position: absolute;
+				left: 500px;
+				top: 80px;
+			}
+
+			#demonHP {
+				position: absolute;
+				left: 810px;
+				top: 40px;
+				color: white;
+				font-size: 30px;
+				font-family: sans-serif;
+
+			}
+			#menu {
+
+				position: absolute;
+				left: 120px;
+				top: 420px;
+				width: 700px;
+				height: 130px;
+				background-color: rgba(0,0,100,.7);
+				border: 2px; solid white;
+				border-radius: 10px 10px 10px 10px;
+				color: white;
+				font-size: 22px;
+				padding-left: 40px;
+				font-family: sans-serif;
+
+			}
+			#message{
+				position: absolute;
+				left: 400px;
+				top: 150px;
+				width: 200px;
+				height: 60px;
+				background-color: rgba(0,0,100,.7);
+				border: 2px; solid white;
+				border-radius: 10px 10px 10px 10px;
+				color: white;
+				font-size: 22px;
+				font-family: sans-serif;
+				text-align: center;
+				padding-top: 30px;
+			}
+
+
+			p,ul,li {
+
+				margin-top: 10px;
+				margin-bottom: 10px;
+
+
+			}
+
+			li {
+
+				list-style: none;
+			}
+
+			li:hover {
+
+				text-decoration: underline;
+				cursor: pointer;
+
+			}
+	</style>
+	</head>
+
+
+	<body>
+
+		<div id="scene">
+
+			<div id="angelHP">???/???</div>
+			<div id="demonHP">???/???</div>
+		    <img src="angel.png" id="angel">
+		    <img src="angel2.png" id="angel2">
+		    <img src="angel3.png" id="angel3">
+		    <img src="angel4.png" id="angelDead">
+		    <img src="angel5.png" id="angelWins">
+
+		    <img src="demon.png" id="demon">
+		    <img src="demon2.png" id="demon2">
+		    <img src="demon3.png" id="demon3">
+		    <img src="demon4.png" id="demonDead">
+
+		    <div id="message"></div>
+		    <div id="menu">
+		    	
+ 				<p>What will you do?</p>
+
+ 				<ul>
+ 					<li onclick="fight()">Fight</li>
+ 					<li onclick="run()">Run</li>
+
+
+
+ 				</ul>
+
+
+		    </div>
+
+
+		</div>
+
+
+		<script>
+			var fighting = false;
+			var angelHPMax = 50;
+			var angelHP = angelHPMax;
+			var angelHPDiv = document.getElementById('angelHP');
+
+		
+			var demonHPMax = 100;
+			var demonHP = demonHPMax;
+			var demonHPDiv = document.getElementById('demonHP');
+			
+			
+			var angelImg = document.getElementById('angel');
+			var angel2Img = document.getElementById('angel2');
+			var angel3Img = document.getElementById('angel3');
+			var angelDeadImg = document.getElementById('angelDead');
+			var angelWinsImg = document.getElementById('angelWins');
+			angel2Img.style.display = 'none';
+			angel3Img.style.display = 'none';
+			angelDeadImg.style.display = 'none';
+			angelWinsImg.style.display = 'none';
+
+			var demonImg = document.getElementById('demon');
+			var demon2Img = document.getElementById('demon2');
+			var demon3Img = document.getElementById('demon3');
+			var demonDeadImg = document.getElementById('demonDead');
+			demon2Img.style.display = 'none';
+			demon3Img.style.display = 'none';
+			demonDeadImg.style.display = 'none';
+
+			var messageDiv = document.getElementById('message');
+			var menuDiv = document.getElementById('menu');
+			messageDiv.style.display = 'none';
+			var song = new Audio('mou.m4a');
+
+			song.volume = .3;
+
+			var angelAttackSound = new Audio('ms.mp3');
+
+			var demonAttackSound = new Audio('sk.mp3');
+
+			var runSound = new Audio('run.mp3');
+			var victorySong = new Audio('d.m4a');
+
+			
+			var songStarted = false;
+
+			function playSong(){
+				if (songStarted == true) {
+					return;
+				}
+
+				song.play();
+				songStarted = true;
+
+			}
+			function hideMenu(){
+				menuDiv.style.display = 'none';
+			}
+			function showMenu(){
+				if (angelHP == 0 || demonHP == 0) {
+					return;
+				}
+				menuDiv.style.display = '';
+			}
+			function hideMessage(){
+				messageDiv.style.display = 'none';
+			}
+			
+			function updateangelHP(){
+				angelHPDiv.innerHTML = angelHP+'/'+angelHPMax;
+
+			}
+			function updatedemonHP(){
+				demonHPDiv.innerHTML =demonHP+'/'+demonHPMax;
+			}
+
+			function showangel2(){
+
+				angelImg.style.display = 'none';
+
+				angel2Img.style.display = '';
+
+
+			}
+
+			function showangel3(){
+
+				angel2Img.style.display = 'none';
+
+				angel3Img.style.display = '';
+
+
+			}
+
+
+			function showangel(){
+
+				angel3Img.style.display = 'none';
+
+				angelImg.style.display = '';
+
+			}
+			function showangelDead(){
+				angelImg.style.display = 'none';
+				angelDeadImg.style.display = '';
+			}
+			function goToLostPage(){
+				window.location.href ='battle2.lose.html';
+			}
+			function angelLoses(){
+				messageDiv.innerHTML = 'You Lose!';
+				messageDiv.style.display = '';
+				setTimeout(goToLostPage, 2000);
+			}
+			function goToWonPage(){
+				window.location.href ='battle2.win.html';
+
+			}
+			function angelWins(){
+				angelImg.style.display = 'none';
+				angelWinsImg.style.display = '';
+				messageDiv.innerHTML = 'You Win!';
+				messageDiv.style.display = '';
+				song.pause();
+				victorySong.play();
+				setTimeout(goToWonPage, 10000);
+
+			}
+
+			function angelReturn(){
+
+				angelImg.style.left = '20px';
+
+				angelImg.style.opacity = 1;
+
+			}
+			function demonReturn(){
+
+				demonImg.style.left = '600px';
+				demonImg.style.opacity = 1;
+			}
+
+			function demonGetHit(){
+				var damage = 10 + Math.round(10 * Math.random());
+
+				if (Math.random() > .8 || angelHP < 20) {
+
+					damage = damage * 2;
+				}
+				demonHP = demonHP - damage;
+
+				if(demonHP < 0){
+
+					demonHP = 0;
+				}
+
+				updatedemonHP();
+
+				demonImg.style.left = '630px';
+
+				demonImg.style.opacity = .5;
+				if (demonHP > 0) {
+					setTimeout(demonReturn, 200);
+
+				}
+				else{
+
+					showdemonDead();
+					setTimeout(angelWins, 700);
+				}
+
+				
+			}
+
+			function playangelAttackSound(){
+
+				angelAttackSound.play();
+			}
+
+
+			function angelAttack(){
+
+
+				angelImg.style.left = '520px';
+
+				setTimeout(showangel2, 150);
+
+				setTimeout(playangelAttackSound, 200);
+
+				setTimeout(showangel3, 250);
+
+				setTimeout(demonGetHit, 300);
+
+				setTimeout(showangel, 350);
+
+				setTimeout(angelReturn, 450);
+
+			}
+
+			function showdemon2(){
+
+				demonImg.style.display = 'none';
+				demon2Img.style.display = '';
+
+			}
+
+			function showdemon3(){
+
+                demon2Img.style.display = 'none';
+				demon3Img.style.display = '';
+			}
+
+			function showdemon(){
+
+                demon3Img.style.display = 'none';
+				demonImg.style.display = '';
+			}
+ 			function showdemonDead(){
+ 				demonImg.style.display = 'none';
+
+ 				demonDeadImg.style.display = '';
+ 			}
+			function angelGetHit(){
+				var damage = Math.round(30 * Math.random());
+				angelHP = angelHP - damage;
+				if (Math.random() < .3) {
+
+					damage = 0;
+				}
+				if (angelHP < 0) {
+					angelHP = 0;
+				}
+				updateangelHP();
+				angelImg.style.left = '0px';
+
+				angelImg.style.opacity = .5;
+				if (angelHP > 0) {
+					setTimeout(angelReturn, 200);}
+				else{
+					showangelDead();
+					setTimeout(angelLoses, 700);
+				}
+
+				
+
+				
+
+			}
+
+			function playdemonAttackSound(){
+
+				demonAttackSound.play();
+			}
+
+			
+
+			function demonAttack(){
+				if (demonHP == 0) {
+					return;
+				}
+
+				demonImg.style.left = '100px';
+
+				setTimeout(showdemon2, 200);
+
+				setTimeout(playdemonAttackSound, 300);
+
+				setTimeout(showdemon3, 500);
+
+				setTimeout(angelGetHit, 600);
+
+				setTimeout(showdemon, 800);
+
+				setTimeout(demonReturn, 1000);
+
+			}
+			function demonAttackFirst(){
+				if (fighting == true) {
+					setTimeout(demonAttackFirst, 2000);
+					return;	
+				}
+				if (Math.random() > .8) {
+
+				hideMenu();
+				demonAttack();
+				setTimeout(showMenu, 1500);
+			}
+				setTimeout(demonAttackFirst, 2000);
+				
+				
+			}
+			function goToRanPage(){
+				window.location.href = 'battle2.lose.html';
+
+			}
+			function run(){
+				fighting = true;
+				if (Math.random() > .5) {
+				angelImg.style.display = 'none';
+				runSound.play();
+				setTimeout(goToRanPage, 1000);
+				}
+				else{
+					hideMenu();
+					messageDiv.innerHTML = 'Couldn\'t run!';
+					messageDiv.style.display = '';
+					setTimeout(demonAttack, 1000);
+					setTimeout(hideMessage, 2000);
+					setTimeout(showMenu, 2000);
+					setTimeout(stopFighting, 2000);
+
+				}
+				
+			}
+			function stopFighting(){
+				fighting = false;
+			}
+			function fight(){
+				fighting = true;
+
+				hideMenu();
+                angelAttack();
+                
+                setTimeout(demonAttack, 1000);
+
+				setTimeout(showMenu, 2000);
+				setTimeout(stopFighting, 2000);
+			}
+			updateangelHP();
+			updatedemonHP();
+			setTimeout(demonAttackFirst, 2000);
+			
+
+		</script>
+
+		
+
+
+	</body>
+	</html>
