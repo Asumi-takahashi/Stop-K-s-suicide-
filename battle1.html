@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 
 <html onclick="playSong()">
@@ -23,7 +24,7 @@
 
 
 				position: relative;
-				background-image: url(R05c44c38a67737a04c2bd00acbea03692.jpg) no-repeat; 
+				background-image: url(R05c44c38a67737a04c2bd00acbea03692.jpg); 
 				width: 1000px;
 				height: 563px;
 				display: table;
@@ -48,14 +49,14 @@
 			}
 			#angelDead {
 				position: absolute;
-				left: -50px;
-				top: 220px;
+				left: -30px;
+				top: 120px;
 			}
             #angelWins{
 
             	position: absolute;
             	left: 20px;
-            	top: 20px;
+            	top: 120px;
             }
 			#angelHP {
 				position: absolute;
@@ -70,8 +71,8 @@
 
 			#demon{
 				position: absolute;
-				left: 600px;
-				top: -40px;
+				left: 550px;
+				top: 50px;
 
 
 
@@ -82,7 +83,7 @@
 			#demon2, #demon3 {
 				position: absolute;
 				left: 100px;
-				top: -40px;
+				top: 50px;
 			}
 			#demonDead{
 
@@ -162,13 +163,13 @@
 
 			<div id="angelHP">???/???</div>
 			<div id="demonHP">???/???</div>
-		    <img src="angel.png" id="angel">
+		    <img src="angel1.png" id="angel">
 		    <img src="angel2.png" id="angel2">
 		    <img src="angel3.png" id="angel3">
 		    <img src="angel4.png" id="angelDead">
 		    <img src="angel5.png" id="angelWins">
 
-		    <img src="demon.png" id="demon">
+		    <img src="demon1.png" id="demon">
 		    <img src="demon2.png" id="demon2">
 		    <img src="demon3.png" id="demon3">
 		    <img src="demon4.png" id="demonDead">
@@ -180,7 +181,7 @@
 
  				<ul>
  					<li onclick="fight()">Fight</li>
- 					<li onclick="run()">Run</li>
+ 					<li onclick="run()">Sleep</li>
 
 
 
@@ -234,7 +235,7 @@
 
 			var demonAttackSound = new Audio('sk.mp3');
 
-			var runSound = new Audio('run.mp3');
+			var runSound = new Audio('hm.mp3');
 			var victorySong = new Audio('d.m4a');
 
 			
@@ -498,7 +499,7 @@
 				}
 				else{
 					hideMenu();
-					messageDiv.innerHTML = 'Couldn\'t run!';
+					messageDiv.innerHTML = 'Couldn\'t sleep!';
 					messageDiv.style.display = '';
 					setTimeout(demonAttack, 1000);
 					setTimeout(hideMessage, 2000);
@@ -533,7 +534,7 @@
 
 
 	</body>
+	</html>
 
 
-</html>
 				
